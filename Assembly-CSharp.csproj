@@ -55,6 +55,8 @@
   <ItemGroup>
      <Compile Include="Assets\Code\CubeCreate.cs" />
      <Compile Include="Assets\Code\CubeTest.cs" />
+     <Compile Include="Assets\WikiExamples\Mirrors\Mirrors2\Mirrors2.cs" />
+     <Compile Include="Assets\WikiExamples\Mirrors\Mirrors2\ViewPlane.cs" />
  <Reference Include="UnityEditor.StandardEvents">
  <HintPath>E:/1MyFiles/Code/unity/MoFang/Library/ScriptAssemblies/UnityEditor.StandardEvents.dll</HintPath>
  </Reference>
