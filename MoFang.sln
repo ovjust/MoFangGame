@@ -1,9 +1,7 @@
+﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2008
-
-Project("{F4BEA7D1-B52A-CDE9-E50A-DCE7578C7555}") = "MoFang", "Assembly-CSharp.csproj", "{655F0BCB-79B9-95B9-5CC8-32BABEE864FA}"
-EndProject
-Project("{F4BEA7D1-B52A-CDE9-E50A-DCE7578C7555}") = "MoFang", "Assembly-UnityScript.unityproj", "{AB5931DC-53B6-E80C-55DF-0B6D3909A329}"
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Assembly-CSharp", "Assembly-CSharp.csproj", "{655F0BCB-79B9-95B9-5CC8-32BABEE864FA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,10 +13,6 @@ Global
 		{655F0BCB-79B9-95B9-5CC8-32BABEE864FA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{655F0BCB-79B9-95B9-5CC8-32BABEE864FA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{655F0BCB-79B9-95B9-5CC8-32BABEE864FA}.Release|Any CPU.Build.0 = Release|Any CPU
-		{AB5931DC-53B6-E80C-55DF-0B6D3909A329}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{AB5931DC-53B6-E80C-55DF-0B6D3909A329}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{AB5931DC-53B6-E80C-55DF-0B6D3909A329}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{AB5931DC-53B6-E80C-55DF-0B6D3909A329}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -41,5 +35,4 @@ Global
 		$3.inheritsScope = text/plain
 		$3.scope = text/plain
 	EndGlobalSection
-
 EndGlobal

@@ -165,7 +165,7 @@ public class CubeCreate : MonoBehaviour {
 			vecX=1;
 			cubes=CubeStates.Where(p=>p.X==level).ToList();
 			cubes.ForEach(p=>{
-				p.Cube.renderer.transform.RotateAround(new Vector3 (0f,0f, 0f), new Vector3 (vecX, vecY, vecZ), angel);
+				p.Cube.GetComponent<Renderer>().transform.RotateAround(new Vector3 (0f,0f, 0f), new Vector3 (vecX, vecY, vecZ), angel);
 				var x0=  p.Z;
 				var y0=p.Y;
 				var angelValau=Math.PI*angel/180;
@@ -179,7 +179,7 @@ public class CubeCreate : MonoBehaviour {
 			vecY=1;
 			cubes=CubeStates.Where(p=>p.Y==level).ToList();
 			cubes.ForEach(p=>{
-				p.Cube.renderer.transform.RotateAround(new Vector3 (0f,0f, 0f), new Vector3 (vecX, vecY, vecZ), angel);
+				p.Cube.GetComponent<Renderer>().transform.RotateAround(new Vector3 (0f,0f, 0f), new Vector3 (vecX, vecY, vecZ), angel);
 			var x0=  p.X;
 				var y0=p.Z;
 				var angelValau=Math.PI*angel/180;
@@ -193,7 +193,7 @@ public class CubeCreate : MonoBehaviour {
 			vecZ=1;
 			cubes=CubeStates.Where(p=>p.Z==level).ToList();
 			cubes.ForEach(p=>{
-				p.Cube.renderer.transform.RotateAround(new Vector3 (0f,0f, 0f), new Vector3 (vecX, vecY, vecZ), angel);
+				p.Cube.GetComponent<Renderer>().transform.RotateAround(new Vector3 (0f,0f, 0f), new Vector3 (vecX, vecY, vecZ), angel);
 				var x0=  p.Y;
 				var y0=p.X;
 				var angelValau=Math.PI*angel/180;
