@@ -11,11 +11,22 @@ public class CubeCreate : MonoBehaviour {
 	float thick=0.05f;
 	float width=1f;
 	float fill=0.9f;
+    DateTime startTime=DateTime.Now;
+    int stepCount;
 	List<CubeState> CubeStates=new List<CubeState>();
-	// Use this for initialization定义
-	void Start () {
-		//  示例  https://blog.csdn.net/yy763496668/article/details/53015674
-		/*  for (int i = 0; i < 10; i+=2)
+    GameObject TextCount;
+
+    bool saveRecover = false;
+    /// <summary>
+    /// 
+    /// </summary>
+    List<StepRecord> stepRecovers = new List<StepRecord>();
+    
+
+    // Use this for initialization定义
+    void Start () {
+        //  示例  https://blog.csdn.net/yy763496668/article/details/53015674
+        /*  for (int i = 0; i < 10; i+=2)
         {
             GameObject obj = GameObject.CreatePrimitive(PrimitiveType.Cube);
             obj.transform.position = new Vector3(i,0,0);
@@ -23,136 +34,177 @@ public class CubeCreate : MonoBehaviour {
 
         }
 		 */
-	CreateCubes();
+        TextCount = GameObject.Find("TextCount");
+       rightButtonStart = UnityEngine.Screen.width - 210;
+
+    CreateCubes();
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		
-       
-	}
+        var time1 = DateTime.Now.Subtract(startTime);
+        TextCount.GetComponentInChildren<TextMesh>().text = string.Format("{0}:{1:00} | {2}", time1.Minutes, time1.Seconds, stepCount);
+ 
+    }
 	int rightButtonStart=600;
 	int bottomButtonStart=300;
 	void OnGUI(){
 		if (GUI.Button(new Rect(0, 0, 100, 50), "B"))
 		 {
-             RotateLevel("z",1,true);
+             RotateLevel("z",new int[]{ 1},true);
         }
 	
 
         if (GUI.Button(new Rect(110, 0, 100, 50), "B'"))
         {
-          RotateLevel("z",1,false);
+          RotateLevel("z", new int[] { 1 }, false);
         }
         	if (GUI.Button(new Rect(0, 100, 100, 50), "U"))
 		 {
-            RotateLevel("y",1,true);
+            RotateLevel("y", new int[] { 1 }, true);
         }
 	
 
         if (GUI.Button(new Rect(110, 100, 100, 50), "U'"))
         {
-             RotateLevel("y",1,false);
+             RotateLevel("y", new int[] { 1 }, false);
         }
 		
 		 	if (GUI.Button(new Rect(0, 250, 100, 50), "L"))
 		 {
-           RotateLevel("x",-1,true);
+           RotateLevel("x", new int[] { -1 }, true);
         }
 	
 
         if (GUI.Button(new Rect(110, 250, 100, 50), "L'"))
         {
-            RotateLevel("x",-1,false);
+            RotateLevel("x", new int[] { -1 }, false);
         }
 		
 		
 		if (GUI.Button(new Rect(rightButtonStart, 0, 100, 50), "R"))
 		 {
-           RotateLevel("x",1,true);
+           RotateLevel("x", new int[] { 1 }, true);
         }
 	
 
         if (GUI.Button(new Rect(rightButtonStart+110, 0, 100, 50), "R'"))
         {
-            RotateLevel("x",1,false);
+            RotateLevel("x", new int[] { 1 }, false);
         }
 		
 		
 			if (GUI.Button(new Rect(rightButtonStart, 200, 100, 50), "F"))
 		 {
-             RotateLevel("z",-1,false);
+             RotateLevel("z", new int[] { -1 }, false);
         }
 	
 
         if (GUI.Button(new Rect(rightButtonStart+110, 200, 100, 50), "F'"))
         {
-            RotateLevel("z",-1,true);
+            RotateLevel("z", new int[] { -1 }, true);
         }
 		
 			if (GUI.Button(new Rect(rightButtonStart, 300, 100, 50), "D"))
 		 {
-             RotateLevel("y",-1,false);
+             RotateLevel("y", new int[] { -1 }, false);
         }
 	
 
         if (GUI.Button(new Rect(rightButtonStart+110, 300, 100, 50), "D'"))
         {
-            RotateLevel("y",-1,true);
+            RotateLevel("y", new int[] { -1 }, true);
         }
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-			if (GUI.Button(new Rect(0, bottomButtonStart, 80, 40), "X"))
+
+
+        if (GUI.Button(new Rect(rightButtonStart, 150, 65, 40), "打乱20次"))
+        {
+            var arxs = new string[] { "x","y","z"};
+            //var rand = new Random();
+            for (var i=0;i<20;i++)
+            {
+               var arx= UnityEngine.Random.Range(0, 2);
+                var dire= Convert.ToBoolean( UnityEngine.Random.Range(0, 1));
+                var level= UnityEngine.Random.Range(-1, 1);
+                RotateLevel(arxs[arx], new int[] {level }, dire);
+            }
+            startTime = DateTime.Now;
+            stepCount = 0;
+        }
+
+
+        if (GUI.Button(new Rect(rightButtonStart+70, 150, 60, 40), "记忆点"))
+        {
+            saveRecover = true;
+            stepRecovers.Clear();
+        }
+
+        if (GUI.Button(new Rect(rightButtonStart + 140, 150, 60, 40), "还原记忆"))
+        {
+            for(var i=stepRecovers.Count-1;i>=0;i--)
+            {
+                var step = stepRecovers[i];
+                RotateLevel(step.Arx, step.Levels, !step.Forward);
+            }
+            stepRecovers.Clear();
+        }
+
+
+
+
+        if (GUI.Button(new Rect(0, bottomButtonStart, 80, 40), "X"))
 		 {
-			for(var i=-1;i<=1;i++)
-           		 RotateLevel("x",i,true);
+			//for(var i=-1;i<=1;i++)
+           		 RotateLevel("x", new int[] { -1,0,1 }, true);
 
         }
 	
 
         if (GUI.Button(new Rect(0, bottomButtonStart+50, 80, 40), "X'"))
         {
-           for(var i=-1;i<=1;i++)
-           		 RotateLevel("x",i,false);
+           //for(var i=-1;i<=1;i++)
+           		 RotateLevel("x", new int[] { -1, 0, 1 }, false);
         }
 		
 			if (GUI.Button(new Rect(90, bottomButtonStart, 80, 40), "Y"))
 		 {
-            for(var i=-1;i<=1;i++)
-           		 RotateLevel("y",i,true);
+            //for(var i=-1;i<=1;i++)
+           		 RotateLevel("y", new int[] { -1, 0, 1 }, true);
         }
 	
 
         if (GUI.Button(new Rect(90, bottomButtonStart+50, 80, 40), "Y'"))
         {
-            for(var i=-1;i<=1;i++)
-           		 RotateLevel("y",i,false);
+           // for(var i=-1;i<=1;i++)
+           		 RotateLevel("y", new int[] { -1, 0, 1 }, false);
         }
 				if (GUI.Button(new Rect(180, bottomButtonStart, 80, 40), "Z"))
 		 {
-           for(var i=-1;i<=1;i++)
-           		 RotateLevel("z",i,true);
+           //for(var i=-1;i<=1;i++)
+           		 RotateLevel("z", new int[] { -1, 0, 1 }, true);
         }
 	
 
         if (GUI.Button(new Rect(180, bottomButtonStart+50, 80, 40), "Z'"))
         {
-             for(var i=-1;i<=1;i++)
-           		 RotateLevel("z",i,false);
+             //for(var i=-1;i<=1;i++)
+           		 RotateLevel("z", new int[] { -1, 0, 1 }, false);
         }
-	}
+
+
+   
+
+    }
 	
-	void RotateLevel(string arx,int level,bool forward)
+	void RotateLevel(string arx,int[] level,bool forward)
 	{
+        if (level.Length == 1)
+            stepCount++;
+        if(saveRecover)
+        {
+            stepRecovers.Add(new StepRecord( arx,level,forward));
+        }
+
 		int vecX=0,vecY=0,vecZ=0,angel=0;
 		List<CubeState> cubes;
 			if(forward)
@@ -163,7 +215,7 @@ public class CubeCreate : MonoBehaviour {
 		if(arx=="x")
 		{
 			vecX=1;
-			cubes=CubeStates.Where(p=>p.X==level).ToList();
+			cubes=CubeStates.Where(p=> level.Contains( p.X)).ToList();
 			cubes.ForEach(p=>{
 				p.Cube.GetComponent<Renderer>().transform.RotateAround(new Vector3 (0f,0f, 0f), new Vector3 (vecX, vecY, vecZ), angel);
 				var x0=  p.Z;
@@ -177,7 +229,7 @@ public class CubeCreate : MonoBehaviour {
 		else if(arx=="y")
 		{
 			vecY=1;
-			cubes=CubeStates.Where(p=>p.Y==level).ToList();
+			cubes=CubeStates.Where(p=> level.Contains(p.Y)).ToList();
 			cubes.ForEach(p=>{
 				p.Cube.GetComponent<Renderer>().transform.RotateAround(new Vector3 (0f,0f, 0f), new Vector3 (vecX, vecY, vecZ), angel);
 			var x0=  p.X;
@@ -191,7 +243,7 @@ public class CubeCreate : MonoBehaviour {
 		else if(arx=="z")
 		{
 			vecZ=1;
-			cubes=CubeStates.Where(p=>p.Z==level).ToList();
+			cubes=CubeStates.Where(p=> level.Contains(p.Z)).ToList();
 			cubes.ForEach(p=>{
 				p.Cube.GetComponent<Renderer>().transform.RotateAround(new Vector3 (0f,0f, 0f), new Vector3 (vecX, vecY, vecZ), angel);
 				var x0=  p.Y;
@@ -385,7 +437,22 @@ public class RotateWatch
 		this.Cube=cube;
 					}
 }
+/// <summary>
+/// 单步操作记录
+/// </summary>
+public class StepRecord
+{
+    public int[] Levels { set; get; }
+    public bool Forward { set; get; }
+    public string Arx { set; get; }
 
+  public StepRecord( string arx,int[] level,bool forward)
+    {
+        Levels = level;
+        Forward = forward;
+        Arx = arx;
+    }
+}
 public class CubeState{
 		public GameObject Cube{set;get;}
 		public int X{set;get;}
