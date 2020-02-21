@@ -136,13 +136,13 @@ public class CubeCreate : MonoBehaviour {
 		
 		 	if (GUI.Button(new Rect(0, 5f * buttonHeight, buttonWidth, buttonHeight), "L"))
 		 {
-           RotateLevel("x", new int[] { -1 }, true);
+           RotateLevel("x", new int[] { -1 }, false);
         }
 	
 
         if (GUI.Button(new Rect(1.10f * buttonWidth, 5f * buttonHeight, buttonWidth, buttonHeight), "L'"))
         {
-            RotateLevel("x", new int[] { -1 }, false);
+            RotateLevel("x", new int[] { -1 }, true);
         }
 		
 		
@@ -190,7 +190,7 @@ public class CubeCreate : MonoBehaviour {
                var arx= UnityEngine.Random.Range(0, 2);
                 var dire= Convert.ToBoolean( UnityEngine.Random.Range(0, 1));
                 var level= UnityEngine.Random.Range(-1, 1);
-                RotateLevel(arxs[arx], new int[] {level }, dire);
+                RotateLevel(arxs[arx], new int[] {level }, dire,false);
             }
             startTime = DateTime.Now;
             stepCount = 0;
