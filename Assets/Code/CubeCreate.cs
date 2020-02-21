@@ -7,8 +7,9 @@ using System.Text;
 
 public class CubeCreate : MonoBehaviour {
 	public int testFace;
-	//public int TestFace2{set;get;}
-	float thick=0.05f;
+    public int fontSize=25;
+    //public int TestFace2{set;get;}
+    float thick=0.05f;
 	float width=1f;
 	float fill=0.9f;
     DateTime startTime=DateTime.Now;
@@ -16,7 +17,12 @@ public class CubeCreate : MonoBehaviour {
 	List<CubeState> CubeStates=new List<CubeState>();
     GameObject TextCount;
 
-    bool saveRecover = false;
+    bool saveRecover = true;
+    int screenWidth;
+    int screenHeight;
+    float buttonWidth;
+    float buttonHeight;
+    GUIStyle fontStyle;
     /// <summary>
     /// 
     /// </summary>
@@ -25,6 +31,8 @@ public class CubeCreate : MonoBehaviour {
 
     // Use this for initialization定义
     void Start () {
+        
+        //GUI.skin.button.fontSize = fontSize;
         //  示例  https://blog.csdn.net/yy763496668/article/details/53015674
         /*  for (int i = 0; i < 10; i+=2)
         {
@@ -34,11 +42,30 @@ public class CubeCreate : MonoBehaviour {
 
         }
 		 */
-        TextCount = GameObject.Find("TextCount");
-       rightButtonStart = UnityEngine.Screen.width - 210;
+         /*
+        fontStyle = new GUIStyle();
+        fontStyle.alignment = TextAnchor.MiddleCenter;
+        fontStyle.fontSize = 25;
+       // fontStyle.normal.textColor = Color.white;
+        //fontStyle.normal.background = (Texture2D)buttonTexture;
+//https://blog.csdn.net/qianqi33/article/details/78925131
+*/
 
-    CreateCubes();
-	}
+       
+        TextCount = GameObject.Find("TextCount");
+      
+       
+        screenWidth = UnityEngine.Screen.width;
+        screenHeight= UnityEngine.Screen.height;
+        buttonWidth = screenWidth * 0.1f;
+        buttonHeight = screenHeight * 0.1f;
+        bottomButtonStart = screenHeight * 0.7f;
+        rightButtonStart = UnityEngine.Screen.width - 2.10f*buttonWidth;
+        CreateCubes();
+        print(screenWidth);
+        fontSize =Convert.ToInt32( screenWidth / 1000f * 20);
+
+    }
 	
 	// Update is called once per frame
 	void Update () {
@@ -46,78 +73,86 @@ public class CubeCreate : MonoBehaviour {
         TextCount.GetComponentInChildren<TextMesh>().text = string.Format("{0}:{1:00} | {2}", time1.Minutes, time1.Seconds, stepCount);
  
     }
-	int rightButtonStart=600;
-	int bottomButtonStart=300;
+	float rightButtonStart=600;
+	float bottomButtonStart=300;
+    bool firstFontSize = true;
 	void OnGUI(){
-		if (GUI.Button(new Rect(0, 0, 100, 50), "B"))
+        if(firstFontSize)
+        {
+            firstFontSize = false;
+            print("GUI.skin.button.fontSize" + GUI.skin.button.fontSize);
+            GUI.skin.button.fontSize = fontSize;
+        }
+     
+        if (GUI.Button(new Rect(0, 0, buttonWidth, buttonHeight), "B"))
 		 {
              RotateLevel("z",new int[]{ 1},true);
         }
 	
 
-        if (GUI.Button(new Rect(110, 0, 100, 50), "B'"))
+        if (GUI.Button(new Rect(1.10f*buttonWidth, 0, buttonWidth, buttonHeight), "B'"))
         {
           RotateLevel("z", new int[] { 1 }, false);
         }
-        	if (GUI.Button(new Rect(0, 100, 100, 50), "U"))
+        	if (GUI.Button(new Rect(0, 2*buttonHeight, buttonWidth, buttonHeight), "U"))
 		 {
             RotateLevel("y", new int[] { 1 }, true);
         }
 	
 
-        if (GUI.Button(new Rect(110, 100, 100, 50), "U'"))
+        if (GUI.Button(new Rect(1.10f * buttonWidth, 2 * buttonHeight, buttonWidth, buttonHeight), "U'"))
         {
              RotateLevel("y", new int[] { 1 }, false);
         }
 		
-		 	if (GUI.Button(new Rect(0, 250, 100, 50), "L"))
+		 	if (GUI.Button(new Rect(0, 5f * buttonHeight, buttonWidth, buttonHeight), "L"))
 		 {
            RotateLevel("x", new int[] { -1 }, true);
         }
 	
 
-        if (GUI.Button(new Rect(110, 250, 100, 50), "L'"))
+        if (GUI.Button(new Rect(1.10f * buttonWidth, 5f * buttonHeight, buttonWidth, buttonHeight), "L'"))
         {
             RotateLevel("x", new int[] { -1 }, false);
         }
 		
 		
-		if (GUI.Button(new Rect(rightButtonStart, 0, 100, 50), "R"))
+		if (GUI.Button(new Rect(rightButtonStart, 0, buttonWidth, buttonHeight), "R"))
 		 {
            RotateLevel("x", new int[] { 1 }, true);
         }
 	
 
-        if (GUI.Button(new Rect(rightButtonStart+110, 0, 100, 50), "R'"))
+        if (GUI.Button(new Rect(rightButtonStart+ 1.10f * buttonWidth, 0, buttonWidth, buttonHeight), "R'"))
         {
             RotateLevel("x", new int[] { 1 }, false);
         }
 		
 		
-			if (GUI.Button(new Rect(rightButtonStart, 200, 100, 50), "F"))
+			if (GUI.Button(new Rect(rightButtonStart, 2 * buttonHeight, buttonWidth, buttonHeight), "F"))
 		 {
              RotateLevel("z", new int[] { -1 }, false);
         }
 	
 
-        if (GUI.Button(new Rect(rightButtonStart+110, 200, 100, 50), "F'"))
+        if (GUI.Button(new Rect(rightButtonStart+ 1.10f * buttonWidth, 2 * buttonHeight, buttonWidth, buttonHeight), "F'"))
         {
             RotateLevel("z", new int[] { -1 }, true);
         }
 		
-			if (GUI.Button(new Rect(rightButtonStart, 300, 100, 50), "D"))
+			if (GUI.Button(new Rect(rightButtonStart, 5 * buttonHeight, buttonWidth, buttonHeight), "D"))
 		 {
              RotateLevel("y", new int[] { -1 }, false);
         }
 	
 
-        if (GUI.Button(new Rect(rightButtonStart+110, 300, 100, 50), "D'"))
+        if (GUI.Button(new Rect(rightButtonStart+ 1.10f * buttonWidth, 5 * buttonHeight, buttonWidth, buttonHeight), "D'"))
         {
             RotateLevel("y", new int[] { -1 }, true);
         }
 
 
-        if (GUI.Button(new Rect(rightButtonStart, 150, 65, 40), "打乱20次"))
+        if (GUI.Button(new Rect(rightButtonStart, 3.5f * buttonHeight, 0.65f* buttonWidth, 0.8f*buttonHeight), "打乱"))
         {
             var arxs = new string[] { "x","y","z"};
             //var rand = new Random();
@@ -133,13 +168,13 @@ public class CubeCreate : MonoBehaviour {
         }
 
 
-        if (GUI.Button(new Rect(rightButtonStart+70, 150, 60, 40), "记忆点"))
+        if (GUI.Button(new Rect(rightButtonStart+0.70f*buttonWidth, 3.5f*buttonHeight, 0.65f * buttonWidth, 0.8f * buttonHeight), "记忆点"))
         {
             saveRecover = true;
             stepRecovers.Clear();
         }
 
-        if (GUI.Button(new Rect(rightButtonStart + 140, 150, 60, 40), "还原记忆"))
+        if (GUI.Button(new Rect(rightButtonStart + 1.40f * buttonWidth, 3.5f * buttonHeight, 0.65f * buttonWidth, 0.8f * buttonHeight), "还原"))
         {
             for(var i=stepRecovers.Count-1;i>=0;i--)
             {
@@ -152,7 +187,7 @@ public class CubeCreate : MonoBehaviour {
 
 
 
-        if (GUI.Button(new Rect(0, bottomButtonStart, 80, 40), "X"))
+        if (GUI.Button(new Rect(0, bottomButtonStart, 0.9f * buttonWidth, 0.9f * buttonHeight), "X"))
 		 {
 			//for(var i=-1;i<=1;i++)
            		 RotateLevel("x", new int[] { -1,0,1 }, true);
@@ -160,32 +195,32 @@ public class CubeCreate : MonoBehaviour {
         }
 	
 
-        if (GUI.Button(new Rect(0, bottomButtonStart+50, 80, 40), "X'"))
+        if (GUI.Button(new Rect(0, bottomButtonStart+ 1.8f*buttonHeight, 0.9f * buttonWidth, 0.9f * buttonHeight), "X'"))
         {
            //for(var i=-1;i<=1;i++)
            		 RotateLevel("x", new int[] { -1, 0, 1 }, false);
         }
 		
-			if (GUI.Button(new Rect(90, bottomButtonStart, 80, 40), "Y"))
+			if (GUI.Button(new Rect(1* buttonWidth, bottomButtonStart, 0.9f * buttonWidth, 0.9f * buttonHeight), "Y"))
 		 {
             //for(var i=-1;i<=1;i++)
            		 RotateLevel("y", new int[] { -1, 0, 1 }, true);
         }
 	
 
-        if (GUI.Button(new Rect(90, bottomButtonStart+50, 80, 40), "Y'"))
+        if (GUI.Button(new Rect( 1 * buttonWidth, bottomButtonStart + 1.8f * buttonHeight, 0.9f * buttonWidth, 0.9f * buttonHeight), "Y'"))
         {
            // for(var i=-1;i<=1;i++)
            		 RotateLevel("y", new int[] { -1, 0, 1 }, false);
         }
-				if (GUI.Button(new Rect(180, bottomButtonStart, 80, 40), "Z"))
+				if (GUI.Button(new Rect(2 * buttonWidth, bottomButtonStart, 0.9f * buttonWidth, 0.9f * buttonHeight), "Z"))
 		 {
            //for(var i=-1;i<=1;i++)
            		 RotateLevel("z", new int[] { -1, 0, 1 }, true);
         }
 	
 
-        if (GUI.Button(new Rect(180, bottomButtonStart+50, 80, 40), "Z'"))
+        if (GUI.Button(new Rect( 2 * buttonWidth, bottomButtonStart + 1.8f * buttonHeight, 0.9f * buttonWidth, 0.9f * buttonHeight), "Z'"))
         {
              //for(var i=-1;i<=1;i++)
            		 RotateLevel("z", new int[] { -1, 0, 1 }, false);
