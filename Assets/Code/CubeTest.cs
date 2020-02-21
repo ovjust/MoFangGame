@@ -31,9 +31,14 @@ public class CubeTest : MonoBehaviour {
               }
               */
     }
-	
+    bool first = true;
 	// Update is called once per frame
 	void Update () {
-	
+	//if(first)
+        {
+            first = false;
+           var obj=  GameObject.Find("Cube");
+            obj.transform.Rotate(new Vector3(Time.deltaTime* 10f, 0, 0), Space.Self);
+        }
 	}
 }

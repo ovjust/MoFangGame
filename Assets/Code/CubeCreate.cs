@@ -8,12 +8,20 @@ using System.Text;
 public class CubeCreate : MonoBehaviour {
 	public int testFace;
     public int fontSize=25;
+    public float rotateSpeed=0.01f;
+
+    float rotateGoal=0;
+    float rotatedAngle=0;
+    Vector3 rotateArx;
     //public int TestFace2{set;get;}
     float thick=0.05f;
 	float width=1f;
 	float fill=0.9f;
     DateTime startTime=DateTime.Now;
     int stepCount;
+    /// <summary>
+    /// 所有小面的信息
+    /// </summary>
 	List<CubeState> CubeStates=new List<CubeState>();
     GameObject TextCount;
 
@@ -22,7 +30,12 @@ public class CubeCreate : MonoBehaviour {
     int screenHeight;
     float buttonWidth;
     float buttonHeight;
-    GUIStyle fontStyle;
+    //GUIStyle fontStyle;
+    /// <summary>
+    /// 当前要旋转的集合
+    /// </summary>
+    List<CubeState> cubes;
+
     /// <summary>
     /// 
     /// </summary>
@@ -71,7 +84,23 @@ public class CubeCreate : MonoBehaviour {
 	void Update () {
         var time1 = DateTime.Now.Subtract(startTime);
         TextCount.GetComponentInChildren<TextMesh>().text = string.Format("{0}:{1:00} | {2}", time1.Minutes, time1.Seconds, stepCount);
- 
+
+        if (rotateGoal == rotatedAngle)
+            return;
+        var rotateAngle = UnityEngine.Time.deltaTime * rotateSpeed * rotateGoal;
+        if (Math.Abs(rotateAngle + rotatedAngle) >= Math.Abs(rotateGoal))
+        {
+            rotateAngle = rotateGoal - rotatedAngle;
+            rotatedAngle = rotateGoal;
+            print(rotatedAngle+" " + UnityEngine.Time.deltaTime);
+        }
+        else
+            rotatedAngle += rotateAngle;
+
+        cubes.ForEach(p =>
+        {
+            p.Cube.GetComponent<Renderer>().transform.RotateAround(new Vector3(0f, 0f, 0f), rotateArx, rotateAngle);
+        });
     }
 	float rightButtonStart=600;
 	float bottomButtonStart=300;
@@ -179,7 +208,7 @@ public class CubeCreate : MonoBehaviour {
             for(var i=stepRecovers.Count-1;i>=0;i--)
             {
                 var step = stepRecovers[i];
-                RotateLevel(step.Arx, step.Levels, !step.Forward);
+                RotateLevel(step.Arx, step.Levels, !step.Forward,false);
             }
             stepRecovers.Clear();
         }
@@ -231,8 +260,10 @@ public class CubeCreate : MonoBehaviour {
 
     }
 	
-	void RotateLevel(string arx,int[] level,bool forward)
+	void RotateLevel(string arx,int[] level,bool forward,bool showCarton=true)
 	{
+        if (rotateGoal != rotatedAngle)
+            return;
         if (level.Length == 1)
             stepCount++;
         if(saveRecover)
@@ -241,18 +272,20 @@ public class CubeCreate : MonoBehaviour {
         }
 
 		int vecX=0,vecY=0,vecZ=0,angel=0;
-		List<CubeState> cubes;
+		
 			if(forward)
 			angel=90;
 		else
 			angel=-90;
-		List<RotateWatch> listWatch=new List<RotateWatch>();
+
+       
+        List<RotateWatch> listWatch=new List<RotateWatch>();
 		if(arx=="x")
 		{
 			vecX=1;
 			cubes=CubeStates.Where(p=> level.Contains( p.X)).ToList();
 			cubes.ForEach(p=>{
-				p.Cube.GetComponent<Renderer>().transform.RotateAround(new Vector3 (0f,0f, 0f), new Vector3 (vecX, vecY, vecZ), angel);
+			
 				var x0=  p.Z;
 				var y0=p.Y;
 				var angelValau=Math.PI*angel/180;
@@ -266,7 +299,7 @@ public class CubeCreate : MonoBehaviour {
 			vecY=1;
 			cubes=CubeStates.Where(p=> level.Contains(p.Y)).ToList();
 			cubes.ForEach(p=>{
-				p.Cube.GetComponent<Renderer>().transform.RotateAround(new Vector3 (0f,0f, 0f), new Vector3 (vecX, vecY, vecZ), angel);
+				//p.Cube.GetComponent<Renderer>().transform.RotateAround(new Vector3 (0f,0f, 0f), new Vector3 (vecX, vecY, vecZ), angel);
 			var x0=  p.X;
 				var y0=p.Z;
 				var angelValau=Math.PI*angel/180;
@@ -280,7 +313,7 @@ public class CubeCreate : MonoBehaviour {
 			vecZ=1;
 			cubes=CubeStates.Where(p=> level.Contains(p.Z)).ToList();
 			cubes.ForEach(p=>{
-				p.Cube.GetComponent<Renderer>().transform.RotateAround(new Vector3 (0f,0f, 0f), new Vector3 (vecX, vecY, vecZ), angel);
+			//	p.Cube.GetComponent<Renderer>().transform.RotateAround(new Vector3 (0f,0f, 0f), new Vector3 (vecX, vecY, vecZ), angel);
 				var x0=  p.Y;
 				var y0=p.X;
 				var angelValau=Math.PI*angel/180;
@@ -289,8 +322,22 @@ public class CubeCreate : MonoBehaviour {
 				listWatch.Add(new RotateWatch(x0,y0,p.X,p.Y,p.Color,p.Cube));
 			});	
 		}
-		
-		var strs= listWatch.OrderBy(p=>p.y0).ThenBy(p=>p.x0).Select(p=>string.Format("{0},{1}  {2},{3}  {4}  {5},{6},{7}"
+        rotateArx = new Vector3(vecX, vecY, vecZ);
+        
+        if (showCarton)
+        {
+            rotateGoal = angel;
+            rotatedAngle = 0;
+        }
+        else
+        {
+            cubes.ForEach(p =>
+            {
+                p.Cube.GetComponent<Renderer>().transform.RotateAround(new Vector3(0f, 0f, 0f), rotateArx, angel);
+            });
+        }
+        /*
+            var strs= listWatch.OrderBy(p=>p.y0).ThenBy(p=>p.x0).Select(p=>string.Format("{0},{1}  {2},{3}  {4}  {5},{6},{7}"
 			,p.x0,p.y0,p.x1,p.y1,p.Color
 			,Math.Round( p.Cube.transform.position.x,1)
 			,Math.Round( p.Cube.transform.position.y,1)
@@ -298,7 +345,7 @@ public class CubeCreate : MonoBehaviour {
 		var str=String.Join("\n",strs);
 		print ( string.Format("{2} {0}  \n{1}",angel, str,arx));
 		// Debug.Log("第二个Button被点击了！");
-		/*
+		
 		StringBuilder sb0=new StringBuilder();
 		StringBuilder sb1=new StringBuilder();
 	     for(var i=-1;i<=1;i++)//y
@@ -308,7 +355,7 @@ public class CubeCreate : MonoBehaviour {
 			sb0.Append(
 		}
 		*/
-		/*
+        /*
 		CubeStates.ForEach(p=>{
 				p.Cube.renderer.transform.RotateAround(new Vector3 (0f,0f, 0f), new Vector3 (vecX, vecY, vecZ), angel);
 				
@@ -319,12 +366,12 @@ public class CubeCreate : MonoBehaviour {
 				
 			});	
 			*/
-		
-		
-	}
-	
-	
-	void CreateCubes()
+
+
+    }
+
+
+    void CreateCubes()
 	{
 				//x z为平面轴，y为高度轴
 		//上表面 黄色
