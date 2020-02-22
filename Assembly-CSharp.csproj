@@ -54,9 +54,12 @@
   </ItemGroup>
   <ItemGroup>
      <Compile Include="Assets\Code\CubeCreate.cs" />
+     <Compile Include="Assets\Code\CubeCreate_2.cs" />
+     <Compile Include="Assets\Code\CubeCreate_2B.cs" />
      <Compile Include="Assets\Code\CubeTest.cs" />
      <Compile Include="Assets\Code\CubeTest2.cs" />
      <Compile Include="Assets\Code\MapCamera.cs" />
+     <Compile Include="Assets\Code\StartMenu.cs" />
      <Compile Include="Assets\WikiExamples\Mirrors\Mirrors2\Mirrors2.cs" />
      <Compile Include="Assets\WikiExamples\Mirrors\Mirrors2\ViewPlane.cs" />
  <Reference Include="UnityEditor.StandardEvents">

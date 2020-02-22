@@ -5,18 +5,18 @@ using System.Linq;
 using System;
 using System.Text;
 
-public class CubeCreate : MonoBehaviour {
+public class CubeCreate_2B : MonoBehaviour {
 	public int testFace;
     public int fontSize=25;
-    public float rotateSpeed=0.01f;
+    public float rotateSpeed=1.5f;
 
     float rotateGoal=0;
     float rotatedAngle=0;
     Vector3 rotateArx;
     //public int TestFace2{set;get;}
     float thick=0.05f;
-	float width=1f;
-	float fill=0.9f;
+	float width=1f/1.4f;
+	float fill=0.9f*1.5f;
     DateTime startTime=DateTime.Now;
     int stepCount;
     /// <summary>
@@ -112,12 +112,10 @@ public class CubeCreate : MonoBehaviour {
             print("GUI.skin.button.fontSize" + GUI.skin.button.fontSize);
             GUI.skin.button.fontSize = fontSize;
         }
-
         if (GUI.Button(new Rect(rightButtonStart - buttonWidth, 0, buttonWidth * 0.8f, buttonHeight * 0.8f), "返回"))
         {
             UnityEngine.SceneManagement.SceneManager.LoadScene("startMenu", UnityEngine.SceneManagement.LoadSceneMode.Single);
         }
-
 
         if (GUI.Button(new Rect(0, 0, buttonWidth, buttonHeight), "B"))
 		 {
@@ -150,10 +148,9 @@ public class CubeCreate : MonoBehaviour {
         {
             RotateLevel("x", new int[] { -1 }, true);
         }
-
-       
-
-        if (GUI.Button(new Rect(rightButtonStart, 0, buttonWidth, buttonHeight), "R"))
+		
+		
+		if (GUI.Button(new Rect(rightButtonStart, 0, buttonWidth, buttonHeight), "R"))
 		 {
            RotateLevel("x", new int[] { 1 }, true);
         }
@@ -383,23 +380,23 @@ public class CubeCreate : MonoBehaviour {
 				//x z为平面轴，y为高度轴
 		//上表面 黄色
 			if(testFace==0||testFace==1)
-	  for (int i = -1; i <=1 ; i++)//x
-			for (int j = -1; j <= 1; j++)//z
+	  for (int i = -1; i <=1 ; i+=2)//x
+			for (int j = -1; j <= 1; j += 2)//z
         {
             GameObject obj = GameObject.CreatePrimitive(PrimitiveType.Cube);
 			obj.transform.localScale=new Vector3(fill,thick,fill);
-            obj.transform.position = new Vector3(i*width,1.5f*width, j*width);
+            obj.transform.position = new Vector3(i*width,2f*width, j*width);
 			obj.GetComponent<MeshRenderer>().material.color=Color.yellow;
 			CubeStates.Add(new CubeState(obj,i,1,j,"yellow"));
         }
 										//下表面 白色
 		if(testFace==0||testFace==2)
-	  for (int i = -1; i <=1 ; i++)//x
-			for (int j = -1; j <= 1; j++)//z
+	  for (int i = -1; i <=1 ; i += 2)//x
+			for (int j = -1; j <= 1; j += 2)//z
         {
             GameObject obj = GameObject.CreatePrimitive(PrimitiveType.Cube);
 			obj.transform.localScale=new Vector3(fill,thick,fill);
-            obj.transform.position = new Vector3(i*width,-1.5f*width, j*width);
+            obj.transform.position = new Vector3(i*width,-2f*width, j*width);
 			obj.GetComponent<MeshRenderer>().material.color=Color.white;
 			CubeStates.Add(new CubeState(obj,i,-1,j,"white"));
         }
@@ -411,7 +408,7 @@ public class CubeCreate : MonoBehaviour {
         {
             GameObject obj = GameObject.CreatePrimitive(PrimitiveType.Cube);
 			obj.transform.localScale=new Vector3(fill,fill,thick);
-            obj.transform.position = new Vector3(i*width,j*width,1.5f*width);
+            obj.transform.position = new Vector3(i*width,j*width,2f*width);
            // obj.GetComponent<Material>().color = Color.yellow;
 			obj.GetComponent<MeshRenderer>().material.color=Color.white;
 			CubeStates.Add(new CubeState(obj,i,j,1));
@@ -424,31 +421,31 @@ public class CubeCreate : MonoBehaviour {
         {
             GameObject obj = GameObject.CreatePrimitive(PrimitiveType.Cube);
 			obj.transform.localScale=new Vector3(fill,fill,thick);
-            obj.transform.position = new Vector3(i*width,j*width,-1.5f*width);
+            obj.transform.position = new Vector3(i*width,j*width,-2f*width);
 			obj.GetComponent<MeshRenderer>().material.color=Color.white;
 			CubeStates.Add(new CubeState(obj,i,j,-1));
         }
           */
 					//左表面 橙
 		if(testFace==0||testFace==3)
-	  for (int i = -1; i <=1 ; i++)//y
-			for (int j = -1; j <= 1; j++)//z
+	  for (int i = -1; i <=1 ; i += 2)//y
+			for (int j = -1; j <= 1; j += 2)//z
         {
             GameObject obj = GameObject.CreatePrimitive(PrimitiveType.Cube);
 			obj.transform.localScale=new Vector3(thick,fill,fill);
-            obj.transform.position = new Vector3(-1.5f*width, i*width,j*width);
+            obj.transform.position = new Vector3(-2f*width, i*width,j*width);
 			obj.GetComponent<MeshRenderer>().material.color=new Color(1f,0.5f,0);
 			CubeStates.Add(new CubeState(obj,-1,i,j,"orange"));
         }
       
 							//右表面 红
 		if(testFace==0||testFace==4)
-	  for (int i = -1; i <=1 ; i++)//y
-			for (int j = -1; j <= 1; j++)//z
+	  for (int i = -1; i <=1 ; i += 2)//y
+			for (int j = -1; j <= 1; j += 2)//z
         {
             GameObject obj = GameObject.CreatePrimitive(PrimitiveType.Cube);
 			obj.transform.localScale=new Vector3(thick,fill,fill);
-            obj.transform.position = new Vector3(1.5f*width, i*width,j*width);
+            obj.transform.position = new Vector3(2f*width, i*width,j*width);
 			obj.GetComponent<MeshRenderer>().material.color=Color.red;
 			CubeStates.Add(new CubeState(obj,1,i,j,"red"));
         }
@@ -460,7 +457,7 @@ public class CubeCreate : MonoBehaviour {
         {
             GameObject obj = GameObject.CreatePrimitive(PrimitiveType.Cube);
 			obj.transform.localScale=new Vector3(fill,thick,fill);
-            obj.transform.position = new Vector3(i*width,-1.5f*width, j*width);
+            obj.transform.position = new Vector3(i*width,-2f*width, j*width);
 			obj.GetComponent<MeshRenderer>().material.color=Color.blue;
 			CubeStates.Add(new CubeState(obj,i,-1,j));
         }
@@ -471,19 +468,19 @@ public class CubeCreate : MonoBehaviour {
         {
             GameObject obj = GameObject.CreatePrimitive(PrimitiveType.Cube);
 			obj.transform.localScale=new Vector3(fill,thick,fill);
-            obj.transform.position = new Vector3(i*width,1.5f*width, j*width);
+            obj.transform.position = new Vector3(i*width,2f*width, j*width);
 			obj.GetComponent<MeshRenderer>().material.color=Color.green;
 			CubeStates.Add(new CubeState(obj,i,1,j));
         }
         */
 			//后表面 绿
 			if(testFace==0||testFace==5)
-	  for (int i = -1; i <=1 ; i++) 
-			for (int j = -1; j <= 1; j++)
+	  for (int i = -1; i <=1 ; i += 2) 
+			for (int j = -1; j <= 1; j += 2)
         {
             GameObject obj = GameObject.CreatePrimitive(PrimitiveType.Cube);
 			obj.transform.localScale=new Vector3(fill,fill,thick);
-            obj.transform.position = new Vector3(i*width,j*width,1.5f*width);
+            obj.transform.position = new Vector3(i*width,j*width,2f*width);
            // obj.GetComponent<Material>().color = Color.yellow;
 			obj.GetComponent<MeshRenderer>().material.color=Color.green;
 			CubeStates.Add(new CubeState(obj,i,j,1,"green"));
@@ -491,12 +488,12 @@ public class CubeCreate : MonoBehaviour {
 	
 			//前表面 蓝
 		if(testFace==0||testFace==6)
-	  for (int i = -1; i <=1 ; i++)  //x
-			for (int j = -1; j <= 1; j++)  //y
+	  for (int i = -1; i <=1 ; i += 2)  //x
+			for (int j = -1; j <= 1; j += 2)  //y
         {
             GameObject obj = GameObject.CreatePrimitive(PrimitiveType.Cube);
 			obj.transform.localScale=new Vector3(fill,fill,thick);
-            obj.transform.position = new Vector3(i*width,j*width,-1.5f*width);
+            obj.transform.position = new Vector3(i*width,j*width,-2f*width);
 			obj.GetComponent<MeshRenderer>().material.color=Color.blue;
 			CubeStates.Add(new CubeState(obj,i,j,-1,"blue"));
         }
@@ -507,61 +504,4 @@ public class CubeCreate : MonoBehaviour {
 		print ( string.Format("all cube:\n {0}  ",str));
 	}
 }
-//检查旋转是否正确
-public class RotateWatch
-{
-	public int x0{set;get;}
-	public int x1{set;get;}
-	public int y0{set;get;}
-	public int y1{set;get;}
-	public string Color{set;get;}
-	public GameObject Cube{set;get;}
-	public RotateWatch(int x0,int y0,int x1,int y1,string color=null,GameObject cube=null)
-					{
-					this.x0=x0;
-						this.x1=x1;
-						this.y0=y0;
-						this.y1=y1;
-		Color=color;
-		this.Cube=cube;
-					}
-}
-/// <summary>
-/// 单步操作记录
-/// </summary>
-public class StepRecord
-{
-    public int[] Levels { set; get; }
-    public bool Forward { set; get; }
-    public string Arx { set; get; }
 
-  public StepRecord( string arx,int[] level,bool forward)
-    {
-        Levels = level;
-        Forward = forward;
-        Arx = arx;
-    }
-}
-public class CubeState{
-		public GameObject Cube{set;get;}
-		public int X{set;get;}
-		public int Y{set;get;}
-		public int Z{set;get;}
-	public string Color{set;get;}
-	/*	public CubeState(GameObject cube,int x,int y,int z)
-		{
-			this.Cube=cube;
-			this.X=x;
-			this.Y=y;
-			this.Z=z;
-		}
-		*/
-	public CubeState(GameObject cube,int x,int y,int z,string color)
-		{
-		this.Color=color;
-			this.Cube=cube;
-			this.X=x;
-			this.Y=y;
-			this.Z=z;
-		}
-	}
